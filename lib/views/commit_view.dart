@@ -19,14 +19,15 @@ class CommitView extends StatefulWidget {
 class _CommitViewState extends State<CommitView> {
   Timer? timer;
   List<CommitDetails?>? commitDetails;
+  List<CommitDetails?>? commitDetailsPrev;
 
   @override
   void initState() {
     super.initState();
 
-    getCommitDetails();
+    setCommitDetails();
     timer = Timer.periodic(const Duration(minutes: 1), (timer) {
-      getCommitDetails();
+      setCommitDetails();
     });
   }
 
@@ -36,10 +37,15 @@ class _CommitViewState extends State<CommitView> {
     super.dispose();
   }
 
-  void getCommitDetails() async {
+  void setCommitDetails() async {
     // get the list of commit_details using github_service
     commitDetails = await GithubService().getCommits(widget.repoName);
-    setState(() {});
+    // only refresh if commitDetails data is not equal to commitDetailsPrev data
+    if (commitDetails != commitDetailsPrev) {
+      setState(() {
+        commitDetailsPrev = commitDetails;
+      });
+    }
   }
 
   String formatDate(DateTime? date) {
