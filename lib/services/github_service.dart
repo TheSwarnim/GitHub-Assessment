@@ -1,24 +1,27 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 import '../model/commit_details.dart';
 import '../model/repo_details.dart';
 
 class GithubService {
-  final Dio _dio = Dio();
+  final _client = http.Client();
 
   // get the list of repositories using RepoDetails model
   Future<List<RepoDetails?>?> getRepos() async {
     try {
       // hit api with the response of the list of repo_details
 
-      final response = await _dio.get<List<RepoDetails>>
-        ('https://api.github.com/users/freeCodeCamp/repos');
-      if (kDebugMode) {
-        print(response.data);
+      var uri = Uri.parse('https://api.github.com/users/theswarnim/repos');
+      var response = await _client.get(uri);
+      // if (kDebugMode) {
+      //   print(response.body);
+      // }
+      if(response.statusCode == 200) {
+        return repoDetailsFromJson(response.body);
       }
-      return response.data;
-    } on DioError catch (e) {
+      return null;
+    } catch (e) {
       if (kDebugMode) {
         print(e);
       }
@@ -30,13 +33,16 @@ class GithubService {
   Future<List<CommitDetails?>?> getCommits(String repoName) async {
     try {
       // hit api with the response of the list of commit_details
-      final response = await _dio.get<List<CommitDetails>>
-        ('https://api.github.com/repos/freeCodeCamp/$repoName/commits');
-      if (kDebugMode) {
-        print(response.data);
+      var uri = Uri.parse('https://api.github.com/repos/theswarnim/$repoName/commits');
+      var response = await _client.get(uri);
+      // if (kDebugMode) {
+      //   print(response.body);
+      // }
+      if(response.statusCode == 200) {
+        return commitDetailsFromJson(response.body);
       }
-      return response.data;
-    } on DioError catch (e) {
+      return null;
+    } catch (e) {
       if (kDebugMode) {
         print(e);
       }
