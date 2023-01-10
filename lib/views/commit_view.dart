@@ -24,6 +24,7 @@ class _CommitViewState extends State<CommitView> {
   void initState() {
     super.initState();
 
+    getCommitDetails();
     timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       getCommitDetails();
     });
@@ -38,7 +39,7 @@ class _CommitViewState extends State<CommitView> {
   void getCommitDetails() async {
     // get the list of commit_details using github_service
     commitDetails = await GithubService().getCommits(widget.repoName);
-    setState(() { });
+    setState(() {});
   }
 
   String formatDate(DateTime? date) {
@@ -48,41 +49,50 @@ class _CommitViewState extends State<CommitView> {
 
   @override
   Widget build(BuildContext context) {
-   // return container widget if commitDetails list is null or empty
-    return commitDetails == null || commitDetails?.isEmpty == true
+    // return container widget if commitDetails list is null or empty
+    return commitDetails == null
         ? const Center(
-            child: Text('No commits found'),
+            child: CircularProgressIndicator(),
           )
-        : Column(
-        children: [
-          Row(
-            children: const [
-              Icon(
-                Icons.commit,
-                color: Colors.black,
-                size: 20,
-              ),
-              Text(
-                ' Latest Commits',
-                style: TextStyle(
-                  fontSize: 14,
+        : commitDetails?.isEmpty == true
+            ? const Center(
+                child: Text('No commits found'),
+              )
+            : Column(children: [
+                Row(
+                  children: const [
+                    Icon(
+                      Icons.commit,
+                      color: Colors.black,
+                      size: 20,
+                    ),
+                    Text(
+                      ' Latest Commits',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Text(
-              Util.removeWhiteSpaces(commitDetails?[0]?.message)
-          ),
-          if(commitDetails?[0]?.authorName != null && commitDetails?[0]?.authorDate != null)
-            Row(
-              children: [
-                Text(commitDetails?[0]?.authorName ?? ''),
-                const Text(' committed on '),
-                // display date in the format of like  of given datetime commitDetails?[0]?.authorDate
-                Text(Util.getFormattedDate(commitDetails?[0]?.authorDate))
-              ],
-            ),
-        ]
-    );
+                Text(
+                  Util.removeWhiteSpaces(commitDetails?[0]?.message ?? ''),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                if (commitDetails?[0]?.authorName != null &&
+                    commitDetails?[0]?.authorDate != null)
+                  Row(
+                    children: [
+                      Text(Util.getMaxString(commitDetails?[0]?.authorName, 15)),
+                      const Text(' committed on ', style: TextStyle(color: Colors.grey)),
+                      // display date in the format of like  of given datetime commitDetails?[0]?.authorDate
+                      Text(Util.getFormattedDate(commitDetails?[0]?.authorDate))
+                    ],
+                  ),
+              ]);
   }
 }
