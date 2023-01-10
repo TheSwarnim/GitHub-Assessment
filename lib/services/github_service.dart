@@ -12,7 +12,7 @@ class GithubService {
     try {
       // hit api with the response of the list of repo_details
 
-      var uri = Uri.parse('https://api.github.com/users/theswarnim/repos');
+      var uri = Uri.parse('https://api.github.com/users/freeCodeCamp/repos');
       var response = await _client.get(uri);
       // if (kDebugMode) {
       //   print(response.body);
@@ -33,7 +33,7 @@ class GithubService {
   Future<List<CommitDetails?>?> getCommits(String repoName) async {
     try {
       // hit api with the response of the list of commit_details
-      var uri = Uri.parse('https://api.github.com/repos/theswarnim/$repoName/commits');
+      var uri = Uri.parse('https://api.github.com/repos/freeCodeCamp/$repoName/commits');
       var response = await _client.get(uri);
       // if (kDebugMode) {
       //   print(response.body);

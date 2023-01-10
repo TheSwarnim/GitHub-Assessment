@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:github_repo/util.dart';
 
@@ -15,13 +17,22 @@ class CommitView extends StatefulWidget {
 }
 
 class _CommitViewState extends State<CommitView> {
+  Timer? timer;
   List<CommitDetails?>? commitDetails;
 
   @override
   void initState() {
     super.initState();
 
-    getCommitDetails();
+    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      getCommitDetails();
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   void getCommitDetails() async {
@@ -37,7 +48,12 @@ class _CommitViewState extends State<CommitView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+   // return container widget if commitDetails list is null or empty
+    return commitDetails == null || commitDetails?.isEmpty == true
+        ? const Center(
+            child: Text('No commits found'),
+          )
+        : Column(
         children: [
           Row(
             children: const [
@@ -55,7 +71,7 @@ class _CommitViewState extends State<CommitView> {
             ],
           ),
           Text(
-            Util.removeWhiteSpaces(commitDetails?[0]?.message)
+              Util.removeWhiteSpaces(commitDetails?[0]?.message)
           ),
           if(commitDetails?[0]?.authorName != null && commitDetails?[0]?.authorDate != null)
             Row(

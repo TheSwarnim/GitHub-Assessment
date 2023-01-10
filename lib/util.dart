@@ -1,5 +1,6 @@
 class Util {
-  static String getMaxString(String str, int max) {
+  static String getMaxString(String? str, int max) {
+    str = removeWhiteSpaces(str);
     if (str.length > max) {
       return '${str.substring(0, max)}...';
     }
