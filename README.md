@@ -1,17 +1,15 @@
-# github_repo
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 # GitHub-Assessment
+
+A flutter app which contains the below functionality:
+
+- Connect to the Github API to retrieve the list of public repositories in Github Account: `https://api.github.com/users/freeCodeCamp/repos`
+and results in a list of public Repositories. 
+- Once the list has been populated, it start retrieving information about the last commit for each
+repository. `eg: https://api.github.com/repos/freeCodeCamp/1Aug2015GameDev/commits`
+Where “freeCodeCamp” (see Task 1) is the user and “1Aug2015GameDev” the repository under
+
+## UML Diagram
+![Android Large - 1](https://user-images.githubusercontent.com/54211377/211665937-6781ff48-2e53-4158-b9a1-138ab6467eb3.png)
+
+## App and Video Link
+https://drive.google.com/drive/folders/15c0b_z66dURVP3XWzlyP7ZsYuSwhsdo9?usp=share_link
